@@ -1,0 +1,16 @@
+PS C:\tmp\git\vector-db\docker> docker compose up -d 
+time="2025-08-01T21:59:13+05:30" level=warning msg="C:\\tmp\\git\\vector-db\\docker\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+[+] Running 9/9
+ ✔ qdrant Pulled                                                                                                    22.1s 
+   ✔ 59e22667830b Pull complete                                                                                     14.8s 
+   ✔ 4c5e863cd1c7 Pull complete                                                                                     15.2s 
+   ✔ 4f4fb700ef54 Pull complete                                                                                     15.3s 
+   ✔ be967389c82d Pull complete                                                                                     15.8s 
+   ✔ bdeb1045e503 Pull complete                                                                                     17.3s 
+   ✔ 3e5bd9a6d878 Pull complete                                                                                     17.4s 
+   ✔ 34d10ac9af97 Pull complete                                                                                     17.5s 
+   ✔ 642422c7a320 Pull complete                                                                                     17.7s 
+time="2025-08-01T21:59:35+05:30" level=warning msg="Found orphan containers ([taskmanager jobmanager]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+[+] Running 1/1
+ ✔ Container qdrant  Started                                                                                         1.7s 
+PS C:\tmp\git\vector-db\docker> 
