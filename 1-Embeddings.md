@@ -96,3 +96,45 @@ Higher dimensions can capture subtler nuances but enlarge storage and slow index
 
 ---
 
+### 1.7  What does **“n-dimensional”** mean?
+
+**Intro** Embeddings are described as “256-dimensional”, “768-dimensional”, etc. The word *dimension* here does **not** mean width, height, depth like a physical object; it means how many independent numeric slots the vector owns.
+
+| Section  | Explanation                                                                                                                                                                                                            | Analogy                                                                                                    |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **What** | A vector of length *n* is a list of *n* numbers: `v = [v₁, v₂, … vₙ]`. Each position captures one latent feature learned by the model.                                                                                 | *A sound-mixer with *n* sliders; each slider controls a subtle aspect of the audio.*                       |
+| **Why**  | More dimensions let the model encode finer semantic distinctions (slang vs legalese, color vs shape in images, etc.). Too many, however, slow search and bloat storage.                                                | *Folding a detailed paper map: the bigger the scale, the more folds you wrestle with.*                     |
+| **How**  | During training, the network chooses how many dimensions to allocate; you pick the final size when you design or fine-tune the model. Typical sweet spots: 384–1024 for text, 64–256 for large-volume recommendations. | *Packing a suitcase: the airline (latency budget) limits its size; you decide what essentials fit inside.* |
+
+---
+
+### 1.8  Numeric precision & **quantization**
+
+**Intro** Embeddings are born as 32-bit floating-point numbers (**float32**). Keeping billions of those eats RAM/disk. *Quantization* shrinks them to cheaper formats—often 8-bit integers (**int8**)—with minimal accuracy loss.
+
+| Section  | Explanation                                                                                                                                                                                                                                                                                                                     | Analogy                                                                                                                       |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **What** | **Float32** stores \~7 decimal digits but costs 4 bytes per value. **Int8** stores whole numbers from -128 to 127 in just 1 byte. *Quantization* maps each float into a nearby integer or into a small codebook so the vector occupies ¼ the space (or less).                                                                   | *Replacing precise GPS coordinates (6 decimal places) with city-block addresses—good enough to get around, lighter to print.* |
+| **Why**  | – Cuts memory and network traffic, vital for billions of vectors.<br>– Speeds SIMD/GPU math because smaller numbers fit wider registers.<br>– Enables mobile/edge deployment.                                                                                                                                                   | *Shipping with vacuum-packed clothes: same outfits, less luggage weight.*                                                     |
+| **How**  | 1. **Uniform quantization** – linearly scales floats into an 8-bit range.<br>2. **Product quantization (PQ)** – splits a long vector into short sub-vectors, replaces each with an index into a 256-entry codebook.<br>3. **Vector-wise normalization** first (unit length) reduces dynamic range so mapping errors stay small. | *Storing paint colors by nearest swatch in a fan deck rather than full RGB values.*                                           |
+
+#### Accuracy trade-off
+
+*Typical recall loss*: < 1 % for text search when moving float32 → int8 with proper normalization. PQ can lose more but is tunable (larger codebooks = better recall, bigger storage).
+
+---
+
+### 1.9  Quick sanity check
+
+| Question                                                 | Short answer                                                                                                                                               |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| *If I quantize, do I need to de-quantize before search?* | No. Most vector DBs measure distance directly in the quantized space or on-the-fly inside SIMD registers.                                                  |
+| *Can I mix float and int vectors in one collection?*     | Best practice is to keep a collection homogeneous; otherwise you pay conversion overhead each query.                                                       |
+| *Does higher **n** always beat lower **n**?*             | Only up to the point where additional features outweigh latency/storage costs. Empirically, recall gains flatten beyond \~1 k dimensions for English text. |
+
+---
+
+### Key takeaway wrap-up
+
+1. **“n-dimensional” = *n* independent semantic sliders.** Higher *n* gives nuance but costs compute.
+2. **Quantization** shrinks each slider’s numeric precision (float32 → int8), slashing memory 4×–16× for negligible recall loss when applied carefully.
