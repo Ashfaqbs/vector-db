@@ -1,2 +1,3 @@
 code/.venv
 docker/qdrant_data/
+.vscode/settings.json
