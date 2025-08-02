@@ -9,3 +9,7 @@ services:
       - "6334:6334"            # gRPC
     volumes:
       - ./qdrant_data:/qdrant/storage   # durable vectors on host
+
+# REST      http://localhost:6333
+# Web UI    http://localhost:6333/dashboard
+# gRPC      http://localhost:6334
