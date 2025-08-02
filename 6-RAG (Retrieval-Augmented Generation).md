@@ -2,13 +2,13 @@
 
 ---
 
-### 8.1 What is RAG?
+### 6.1 What is RAG?
 
 Retrieval-Augmented Generation (RAG) is a method where a language model is provided with relevant external information at query time. The model uses this information to generate responses that are grounded in factual or domain-specific data. This technique is especially useful when the language model’s training data is incomplete, outdated, or not domain-aware.
 
 ---
 
-### 8.2 Why use RAG?
+### 6.2 Why use RAG?
 
 | Challenge                                    | RAG Benefit                                           |
 | -------------------------------------------- | ----------------------------------------------------- |
@@ -19,7 +19,7 @@ Retrieval-Augmented Generation (RAG) is a method where a language model is provi
 
 ---
 
-### 8.3 RAG Process Architecture
+### 6.3 RAG Process Architecture
 
 ```text
           ┌────────────────────┐
@@ -48,7 +48,7 @@ Retrieval-Augmented Generation (RAG) is a method where a language model is provi
 
 ---
 
-### 8.4 Example Dataset
+### 6.4 Example Dataset
 
 Document chunks can be short paragraphs or sentences from longer files. Each chunk is embedded and stored in a vector database, along with metadata.
 
@@ -66,7 +66,7 @@ Type: "reference"
 
 ---
 
-### 8.5 Embedding and Storing Documents
+### 6.5 Embedding and Storing Documents
 
 A vector database such as Qdrant is used to store document embeddings along with metadata.
 
@@ -104,7 +104,7 @@ client.upsert(collection_name="doc_demo", points=points)
 
 ---
 
-### 8.6 Retrieval Query with Filter
+### 6.6 Retrieval Query with Filter
 
 To simulate a RAG query, the system embeds the incoming question and performs a filtered vector search to get top-k context chunks.
 
@@ -126,7 +126,7 @@ results = client.search(
 
 ---
 
-### 8.7 Prompt Composition for LLM
+### 6.7 Prompt Composition for LLM
 
 The retrieved chunks are merged into a system prompt for the language model.
 
@@ -149,7 +149,7 @@ print(prompt)
 
 ---
 
-### 8.8 Example Prompt Output
+### 6.8 Example Prompt Output
 
 ```
 You are an AI assistant helping users with Kubernetes tasks.
@@ -166,7 +166,7 @@ Answer:
 
 ---
 
-### 8.9 Key Takeaways
+### 6.9 Key Takeaways
 
 * RAG enables language models to generate accurate, context-aware answers using dynamic external documents.
 * The vector DB acts as a retrieval layer, selecting the most relevant content based on semantic similarity and filters.
