@@ -1,1 +1,2 @@
 code/.venv
+docker/qdrant_data/
